@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="bn" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var origFetch = window.fetch;
+          var currentFetch = typeof origFetch === 'function' ? origFetch.bind(window) : null;
+          var desc = {
+            get: function() { return currentFetch; },
+            set: function(val) { currentFetch = val; },
+            configurable: true,
+            enumerable: true
+          };
+          Object.defineProperty(window, 'fetch', desc);
+          if (typeof Window !== 'undefined' && Window.prototype) {
+            try {
+              Object.defineProperty(Window.prototype, 'fetch', desc);
+            } catch (e) {}
+          }
+        } catch (err) {}
+      })();
+    </script>
+    <title>ডিএন বাংলা ফটোকার্ড ইঞ্জিন - GitHub আপলোড রেডি প্যাক</title>
+    <meta name="description" content="ডিএন বাংলা 1920x1920 ফটোকার্ড জেনারেটর এবং GitHub ও GitHub Pages এ সরাসরি আপলোড করার সম্পূর্ণ ফাইল, জিপ প্যাকেজ ও গাইডলাইন।" />
+    <meta property="og:title" content="ডিএন বাংলা ফটোকার্ড ইঞ্জিন - GitHub আপলোড রেডি প্যাক" />
+    <meta property="og:description" content="ডিএন বাংলা 1920x1920 ফটোকার্ড জেনারেটর এবং GitHub ও GitHub Pages এ সরাসরি আপলোড করার সম্পূর্ণ ফাইল, জিপ প্যাকেজ ও গাইডলাইন।" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

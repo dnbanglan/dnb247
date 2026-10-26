@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="bn" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ডিএন বাংলা - 1920x1920 PhotoCard Engine</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#e50914',
+              darkRed: '#b20710',
+              blue: '#0056b3',
+              dark: '#0f172a',
+              card: '#1e293b',
+              accent: '#f59e0b',
+              maroon: '#800000'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts for Bengali -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Hind Siliguri', sans-serif;
+      background-color: #0b0f19;
+      color: #f8fafc;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    .active-nav {
+      background-color: #e50914 !important;
+      color: #ffffff !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col md:flex-row antialiased selection:bg-red-600 selection:text-white">
+
+  <!-- Sidebar Navigation -->
+  <aside class="w-full md:w-64 bg-slate-900 border-b md:border-b-0 md:border-r border-slate-800 flex-shrink-0">
+    <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-red-600 text-white font-bold rounded-lg px-2.5 py-1 text-lg shadow-lg shadow-red-900/40">DN</div>
+        <div>
+          <h1 class="font-bold text-base tracking-wide text-white">ডিএন বাংলা</h1>
+          <p class="text-[10px] text-slate-400">1920x1920 PhotoCard Engine</p>
+        </div>
+      </div>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] bg-amber-500/10 text-amber-300 border border-amber-500/20 rounded-full font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> লোকাল ডেমো
+      </span>
+    </div>
+
+    <nav class="p-3 space-y-1 text-sm font-medium">
+      <button onclick="switchTab('overview')" id="nav-overview" class="active-nav w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-solid fa-chart-pie w-5 text-center"></i> ওভারভিউ ড্যাশবোর্ড
+      </button>
+      <button onclick="switchTab('photocard')" id="nav-photocard" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-solid fa-image w-5 text-center"></i> ফটোকার্ড জেনারেটর (1920x1920)
+      </button>
+      <button onclick="switchTab('texttrigger')" id="nav-texttrigger" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-solid fa-font w-5 text-center"></i> টেক্সট / টিগার ফটোকার্ড
+      </button>
+      <button onclick="switchTab('admanager')" id="nav-admanager" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-solid fa-arrows-spin w-5 text-center"></i> লোকাল এড ম্যানেজার ও রোটেটর
+      </button>
+      <button onclick="switchTab('schedule')" id="nav-schedule" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i> দৈনিক অটো শিডিউলার
+      </button>
+      <button onclick="switchTab('staff')" id="nav-staff" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-solid fa-id-card w-5 text-center"></i> কর্মী আইডি কার্ড জেনারেটর
+      </button>
+      <button onclick="switchTab('integrations')" id="nav-integrations" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-brands fa-wordpress w-5 text-center"></i> ওয়ার্ডপ্রেস ও সোশ্যাল API
+      </button>
+      <button onclick="switchTab('logs')" id="nav-logs" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition text-slate-300 hover:bg-slate-800 text-left">
+        <i class="fa-solid fa-terminal w-5 text-center"></i> লাইভ সিস্টেম লগস
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <!-- Top Bar -->
+    <header class="bg-slate-900 border-b border-slate-800 p-4 flex justify-between items-center sticky top-0 z-20 shadow-md">
+      <div>
+        <h2 id="page-title" class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-gauge-high text-red-500"></i> অটোমেশন কন্ট্রোল সেন্টার
+        </h2>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 hidden sm:flex items-center gap-2">
+          <i class="fa-solid fa-rotate text-emerald-400 animate-spin"></i>
+          <span>সক্রিয় বিজ্ঞাপন: <strong id="topbar-ad-name" class="text-amber-400">নিউ ক্লাসিক ইভেন্ট</strong></span>
+        </div>
+        <button onclick="triggerAutoFetch()" class="bg-red-600 hover:bg-red-700 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow flex items-center gap-2 transition">
+          <i class="fa-brands fa-wordpress" id="sync-icon"></i> ওয়ার্ডপ্রেস সংযোগ
+        </button>
+      </div>
+    </header>
+
+    <div class="p-4 md:p-6 space-y-6">
+
+      <!-- Alert Notification Banner -->
+      <div id="toast-message" class="hidden p-3 rounded-lg bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs flex items-center justify-between transition-all">
+        <span id="toast-text"><i class="fa-solid fa-check-circle mr-2"></i> সফলভাবে সম্পন্ন হয়েছে!</span>
+        <button onclick="document.getElementById('toast-message').classList.add('hidden')" class="text-emerald-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- ==================== TAB 1: OVERVIEW ==================== -->
+      <section id="tab-overview" class="space-y-6">
+        <div class="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-xs text-amber-200">
+          <i class="fa-solid fa-circle-info mr-1" aria-hidden="true"></i>
+          এই ড্যাশবোর্ডের সংখ্যা নমুনা; এখানে কোনো WordPress, সোশ্যাল মিডিয়া বা শিডিউলার ডেটা সংযুক্ত নেই।
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400">আজকের অটো ফটোকার্ড</p>
+              <h3 class="text-2xl font-bold text-white mt-1">৫৬ টি</h3>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-newspaper"></i>
+            </div>
+          </div>
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400">ওয়ার্ডপ্রেস সিঙ্ক পোস্ট</p>
+              <h3 class="text-2xl font-bold text-white mt-1">৩২ টি</h3>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center text-xl">
+              <i class="fa-brands fa-wordpress"></i>
+            </div>
+          </div>
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400">লোকাল বিজ্ঞাপন ব্যানার</p>
+              <h3 class="text-2xl font-bold text-amber-400 mt-1" id="overview-active-ads">৩ টি</h3>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-arrows-spin"></i>
+            </div>
+          </div>
+          <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+            <div>
+              <p class="text-xs text-slate-400">নিবন্ধিত কর্মী আইডি</p>
+              <h3 class="text-2xl font-bold text-emerald-400 mt-1">৩ জন</h3>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl">
+              <i class="fa-solid fa-address-card"></i>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 2: PHOTOCARD GENERATOR (1920x1920) ==================== -->
+      <section id="tab-photocard" class="space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <!-- Left Controls (5 cols) -->
+          <div class="lg:col-span-5 bg-slate-900 rounded-xl border border-slate-800 p-5 space-y-4 max-h-[85vh] overflow-y-auto">
+            <h3 class="font-bold text-base text-white border-b border-slate-800 pb-3 flex items-center justify-between">
+              <span><i class="fa-solid fa-sliders text-red-500"></i> ফটোকার্ড ডিজাইন কন্ট্রোল</span>
+              <span class="text-xs px-2 py-0.5 bg-red-500/20 text-red-400 border border-red-500/30 rounded font-mono">1920x1920 PX</span>
+            </h3>
+
+            <!-- ১. টপ হেডার ব্যাকগ্রাউন্ড কালার -->
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+              <label class="block text-xs font-bold text-emerald-400">
+                <span><i class="fa-solid fa-palette"></i> ১. টপ হেডার ব্যাকগ্রাউন্ড কালার (0px-80px)</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <button onclick="resetTopHeaderColor()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-xs text-slate-200">
+                  <i class="fa-solid fa-rotate-left mr-1"></i> ডিফল্ট (হোয়াইট)
+                </button>
+                <div class="flex-1 flex items-center gap-2 bg-slate-900 px-3 py-1 border border-slate-700 rounded">
+                  <span class="text-[11px] text-slate-400">কাস্টম:</span>
+                  <input type="color" id="picker-top-bg" value="#ffffff" onchange="drawCanvas()" class="w-7 h-6 bg-transparent rounded cursor-pointer">
+                  <input type="color" id="picker-top-text" value="#111111" onchange="drawCanvas()" title="তারিখ ফন্ট কালার" class="w-7 h-6 bg-transparent rounded cursor-pointer">
+                </div>
+              </div>
+            </div>
+
+            <!-- ২. ফিচার ছবির নিচের ব্যাকগ্রাউন্ড কালার -->
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+              <label class="block text-xs font-bold text-amber-400">
+                <span><i class="fa-solid fa-palette"></i> ২. হেডলাইনের ব্যাকগ্রাউন্ড কালার (1165px-1563px)</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <button onclick="resetBottomAreaColor()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded text-xs text-slate-200">
+                  <i class="fa-solid fa-rotate-left mr-1"></i> ডিফল্ট (মেরুন)
+                </button>
+                <div class="flex-1 flex items-center gap-2 bg-slate-900 px-3 py-1 border border-slate-700 rounded">
+                  <span class="text-[11px] text-slate-400">কাস্টম:</span>
+                  <input type="color" id="picker-bottom-bg" value="#840b0b" onchange="drawCanvas()" class="w-7 h-6 bg-transparent rounded cursor-pointer">
+                  <input type="color" id="picker-bottom-text" value="#ffffff" onchange="drawCanvas()" title="হেডলাইন কালার" class="w-7 h-6 bg-transparent rounded cursor-pointer">
+                </div>
+              </div>
+            </div>
+
+            <!-- Inputs & Controls -->
+            <div class="space-y-3">
+              <!-- ক্যাটাগরি / ট্যাগ কন্ট্রোল -->
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-slate-200">ক্যাটাগরি / ট্যাগ (ডিএন বাংলা)</label>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggle-category-badge" checked onchange="drawCanvas()" class="sr-only peer">
+                    <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-red-600"></div>
+                    <span class="ml-2 text-[10px] text-slate-400 font-medium">চালু / বন্ধ</span>
+                  </label>
+                </div>
+                <input type="text" id="input-category" value="জাতীয় সংবাদ" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-red-500">
+              </div>
+
+              <!-- Date Controls -->
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-slate-200">তারিখ সিস্টেম (ডান পাশে)</label>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggle-auto-date" checked onchange="handleAutoDateToggle()" class="sr-only peer">
+                    <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-red-600"></div>
+                    <span class="ml-2 text-[10px] text-slate-400 font-medium">অটো তারিখ</span>
+                  </label>
+                </div>
+                <input type="text" id="input-date-val" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200">
+              </div>
+
+              <!-- "বিস্তারিত কমেন্টে" রাউন্ড ব্যাজ (১০৯০px - ১১৬৫px = ৭৫px) -->
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <i class="fa-solid fa-circle-dot"></i> "বিস্তারিত কমেন্টে" রাউন্ড ব্যাজ (1090px - 1165px)
+                  </label>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggle-comment-badge" checked onchange="drawCanvas()" class="sr-only peer">
+                    <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-600"></div>
+                    <span class="ml-2 text-[10px] text-slate-400 font-medium">চালু / বন্ধ</span>
+                  </label>
+                </div>
+                <input type="text" id="input-comment-text" value="বিস্তারিত কমেন্টে" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200">
+              </div>
+
+              <!-- শিরোনাম / মূল হেডিং (১১৬৫px - ১৫৬৩px = ৩৯৮px) -->
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                <label class="block text-xs font-bold text-red-400 mb-1">
+                  <i class="fa-solid fa-heading mr-1"></i> শিরোনাম / মূল হেডিং (১১৬৫px - ১৫৬৩px = ৩৯৮px):
+                </label>
+                <textarea id="input-headline" rows="3" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-white text-center focus:outline-none focus:border-red-500">বাংলাদেশে নতুন ডিজিটাল অটোমেশন ও ফটোকার্ড সিস্টেম চালু হয়েছে</textarea>
+
+                <div class="space-y-3 pt-2 border-t border-slate-800">
+                  <div>
+                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                      <span>হেডলাইন ফন্ট সাইজ:</span>
+                      <span id="fontsize-val" class="font-bold text-amber-400">80px</span>
+                    </div>
+                    <input type="range" id="input-fontsize" min="40" max="120" value="80" oninput="drawCanvas()" class="w-full accent-red-600">
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                      <span>ডানে-বামে মার্জিন (অটো ১/২/৩ লাইন):</span>
+                      <span id="margin-val" class="font-bold text-amber-400">120px</span>
+                    </div>
+                    <input type="range" id="input-margin" min="40" max="450" value="120" oninput="drawCanvas()" class="w-full accent-red-600">
+                  </div>
+                </div>
+              </div>
+
+              <!-- ৪. সোশ্যাল ও ওয়েবসাইট লিংক বার (১৫৬৩px - ১৬৪০px) -->
+              <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-emerald-400">
+                    <i class="fa-solid fa-link"></i> ৪. ওয়েবসাইট ও সোশ্যাল লিংক বার (১৫৬৩px - ১৬৪০px)
+                  </label>
+                  <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="toggle-social-bar" checked onchange="drawCanvas()" class="sr-only peer">
+                    <div class="w-8 h-4 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-600"></div>
+                    <span class="ml-2 text-[10px] text-slate-400 font-medium">চালু / বন্ধ</span>
+                  </label>
+                </div>
+                <p class="text-[10px] text-slate-400">ফটোকার্ডে ওয়েবসাইটের ঠিকানা ও শুধু সোশ্যাল মিডিয়া আইকন দেখাবে—সোশ্যাল URL/নাম বা কাস্টম URL নয়। কোনো সোশ্যাল লিংক খালি রাখলে তার আইকনও দেখা যাবে না।</p>
+                
+                <div>
+                  <label class="block text-[11px] text-slate-400 mb-0.5">ওয়েবসাইট লিংক (কার্ডে দেখানো হবে):</label>
+                  <input type="text" id="link-website" value="DNBangla.com.bd" oninput="drawCanvas()" placeholder="DNBangla.com.bd" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1 text-xs text-slate-200">
+                </div>
+
+                <div>
+                  <label class="block text-[11px] text-slate-400 mb-0.5">কাস্টম URL / কমেন্ট লিংক (কার্ডে দেখানো হবে না):</label>
+                  <input type="text" id="link-custom-url" value="/dnbanglaN" oninput="drawCanvas()" placeholder="একটি কাস্টম URL বসান..." class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-1 text-xs text-slate-200">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                  <div>
+                    <label class="block text-[10px] text-slate-400">Facebook Link:</label>
+                    <input type="text" id="link-facebook" value="facebook.com/dnbanglan" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-[11px] text-slate-200">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-slate-400">X (Twitter) Link:</label>
+                    <input type="text" id="link-x" value="x.com/dnbanglan" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-[11px] text-slate-200">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-slate-400">Threads Link:</label>
+                    <input type="text" id="link-threads" value="Threads.com/dnbanglan" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-[11px] text-slate-200">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-slate-400">Instagram Link:</label>
+                    <input type="text" id="link-instagram" value="instagram.com/dnbanglan" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-[11px] text-slate-200">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-slate-400">YouTube Link:</label>
+                    <input type="text" id="link-youtube" value="youtube.com/@dnbanglan" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-[11px] text-slate-200">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-slate-400">LinkedIn Link:</label>
+                    <input type="text" id="link-linkedin" value="linkedin.com/in/dnbanglan/" oninput="drawCanvas()" class="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-[11px] text-slate-200">
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-1">
+                  <span class="text-xs text-slate-400">বার ব্যাকগ্রাউন্ড কালার:</span>
+                  <input type="color" id="input-footer-bg" value="#1e293b" onchange="drawCanvas()" class="w-8 h-7 bg-transparent rounded cursor-pointer">
+                </div>
+              </div>
+            </div>
+
+            <!-- Custom 1920x1080 Feature Photo Upload -->
+            <div class="space-y-2 border-t border-slate-800 pt-3">
+              <label class="block text-xs font-semibold text-amber-400">
+                <i class="fa-solid fa-image mr-1"></i> সংবাদের ফিচার ছবি আপলোড করুন (1920x1080px):
+              </label>
+              <input type="file" id="file-bg" accept="image/*" onchange="handleBgUpload(event)" class="w-full text-xs text-slate-400 file:mr-2 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200">
+            </div>
+
+            <!-- বিজ্ঞাপনের ব্যানার নির্বাচন (1640px to 1920px) -->
+            <div class="space-y-3 border-t border-slate-800 pt-3">
+              <h4 class="text-xs font-bold text-amber-400 flex items-center justify-between">
+                <span><i class="fa-solid fa-rectangle-ad"></i> বিজ্ঞাপনের ব্যানার নির্বাচন (১৬৪০px - ১৯২০px)</span>
+                <span class="text-[10px] text-amber-300 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">এই ব্রাউজারে সংরক্ষণ</span>
+              </h4>
+              <select id="ad-banner-select" onchange="changeSelectedAd(this.value)" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-xs text-white font-medium focus:outline-none focus:border-amber-500">
+              </select>
+              <button onclick="rotateToNextAd()" class="w-full py-2 bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 rounded text-xs font-semibold flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-arrows-rotate"></i> পরবর্তী বিজ্ঞাপনে ঘুরান (Next Cycle)
+              </button>
+            </div>
+
+            <!-- Action Button -->
+            <div class="pt-2">
+              <button onclick="downloadCanvas()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-xs shadow flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-download"></i> HD ফটোকার্ড ডাউনলোড (1920x1920 PX)
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Preview Area (7 cols) -->
+          <div class="lg:col-span-7 bg-slate-900 rounded-xl border border-slate-800 p-5 flex flex-col items-center justify-between min-h-[500px]">
+            <div class="w-full flex justify-between items-center mb-3">
+              <h4 class="font-bold text-sm text-slate-200 flex items-center gap-2">
+                <i class="fa-solid fa-eye text-blue-400"></i> ১৯২০ x ১৯২০ PX ক্যানভাস প্রিভিউ
+              </h4>
+              <span class="text-[11px] bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700 font-mono">1920x1920 Square</span>
+            </div>
+
+            <!-- Canvas Container -->
+            <div class="w-full flex justify-center items-center py-2 relative">
+              <canvas id="photocardCanvas" width="1920" height="1920" class="w-full max-w-[500px] aspect-square rounded-lg border border-slate-700 shadow-2xl bg-white object-contain"></canvas>
+            </div>
+
+            <!-- Quick Publish Controls -->
+            <div class="w-full bg-slate-950 p-4 rounded-xl border border-slate-800 mt-4 space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span class="text-xs font-bold text-slate-300">সোশ্যাল মিডিয়া প্রকাশ</span>
+                <span class="text-[10px] text-amber-300"><i class="fa-solid fa-circle-info"></i> API সংযুক্ত নয় · ডেমো</span>
+              </div>
+              <p class="text-[11px] text-slate-400">এই একক HTML ফাইল থেকে সরাসরি পোস্ট করা যায় না। প্রকাশের জন্য সংশ্লিষ্ট প্ল্যাটফর্মের API সংযোগ দরকার।</p>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button onclick="publishDirectly('Facebook Page')" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold py-2 px-2.5 rounded-lg flex items-center justify-center gap-1.5 transition">
+                  <i class="fa-brands fa-facebook"></i> ফেসবুক পেজ
+                </button>
+                <button onclick="publishDirectly('Facebook Group')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold py-2 px-2.5 rounded-lg flex items-center justify-center gap-1.5 transition">
+                  <i class="fa-solid fa-users"></i> ফেসবুক গ্রুপ
+                </button>
+                <button onclick="publishDirectly('Telegram Channel')" class="bg-sky-500 hover:bg-sky-600 text-white text-[11px] font-bold py-2 px-2.5 rounded-lg flex items-center justify-center gap-1.5 transition">
+                  <i class="fa-brands fa-telegram"></i> টেলিগ্রাম
+                </button>
+                <button onclick="publishDirectly('Instagram Feed')" class="bg-pink-600 hover:bg-pink-700 text-white text-[11px] font-bold py-2 px-2.5 rounded-lg flex items-center justify-center gap-1.5 transition">
+                  <i class="fa-brands fa-instagram"></i> ইনস্টাগ্রাম
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== TAB 3: TEXT / TRIGGER PHOTOCARD ==================== -->
+      <section id="tab-texttrigger" class="hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-solid fa-font text-amber-500"></i> টেক্সট / টিগার ফটোকার্ড জেনারেটর (1920x1920px)
+            </h3>
+            <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded">সেন্টার্ড এলাইনমেন্ট</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">ব্যাকগ্রাউন্ড স্টাইল / কালার:</label>
+                <select id="text-trigger-bg" onchange="handleTextTriggerBackgroundChange()" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white">
+                  <option value="gradient-red">DN Bangla Red Gradient</option>
+                  <option value="gradient-blue">Deep Slate Night</option>
+                  <option value="gradient-maroon">Maroon Classic Event</option>
+                  <option value="gradient-dark">Dark Minimal</option>
+                  <option value="custom">Custom Color</option>
+                </select>
+                <div class="flex items-center gap-2 mt-2">
+                  <label for="text-trigger-custom-color" class="text-[11px] text-slate-400">কাস্টম কালার:</label>
+                  <input type="color" id="text-trigger-custom-color" value="#25406b" disabled oninput="drawTextTriggerCanvas()" class="w-9 h-7 bg-transparent rounded cursor-not-allowed opacity-50">
+                  <span id="text-trigger-custom-hint" class="text-[10px] text-slate-500">কাস্টম কালার ব্যবহার করতে “Custom Color” বেছে নিন।</span>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">উপরে ছোট ক্যাটাগরি:</label>
+                <input type="text" id="text-trigger-cat" value="⚠️ বিশেষ ঘোষণা ও ব্রেকিং নিউজ" oninput="drawTextTriggerCanvas()" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">মূল বার্তা (সর্বদা সেন্টারে থাকবে):</label>
+                <textarea id="text-trigger-content" rows="4" oninput="drawTextTriggerCanvas()" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-2 text-sm text-white text-center">আজ রাত ১০ টার মধ্যে সকল বিভাগীয় প্রধানদের জরুরি মিটিংয়ে উপস্থিত থাকার নির্দেশ দেওয়া হলো।</textarea>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                  <span>বার্তা ফন্ট সাইজ (ছোট/বড়):</span>
+                  <span id="tc-fontsize-val">75px</span>
+                </div>
+                <input type="range" id="tc-input-fontsize" min="40" max="120" value="75" oninput="drawTextTriggerCanvas()" class="w-full accent-amber-500">
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                  <span>বাম ও ডান মার্জিন / লেখার প্রস্থ:</span>
+                  <span id="tc-margin-val">225px / 1470px</span>
+                </div>
+                <input type="range" id="tc-input-margin" min="80" max="450" value="225" oninput="drawTextTriggerCanvas()" class="w-full accent-amber-500">
+              </div>
+
+              <button onclick="generateTextTriggerCard()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-xs shadow flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> পরবর্তী বিজ্ঞাপনসহ নতুন টেক্সট ফটোকার্ড তৈরি
+              </button>
+              <button onclick="downloadTextTriggerCanvas()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-lg text-xs shadow flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-download"></i> টেক্সট ফটোকার্ড ডাউনলোড (1920x1920)
+              </button>
+            </div>
+            <div class="flex flex-col items-center justify-center bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <canvas id="textTriggerCanvas" width="1920" height="1920" class="w-full max-w-[450px] aspect-square rounded-lg border border-slate-700 shadow-2xl object-contain"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 4: AD MANAGER ==================== -->
+      <section id="tab-admanager" class="hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-5">
+          <div class="border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-solid fa-arrows-spin text-amber-500"></i> লোকাল এড ম্যানেজার ও ব্যানার আপলোড (স্থায়ী সংরক্ষণ)
+            </h3>
+          <p class="text-xs text-slate-400 mt-1">ব্যানার ও যোগাযোগের তথ্য এই ব্রাউজারের লোকাল স্টোরেজে রাখা হবে; অন্য ডিভাইসে সিঙ্ক হবে না।</p>
+          </div>
+
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+            <h4 class="text-xs font-bold text-amber-400"><i class="fa-solid fa-upload"></i> পিসি থেকে নতুন বিজ্ঞাপন ব্যানার আপলোড করুন</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">বিজ্ঞাপনের নাম / ব্রান্ড:</label>
+                <input type="text" id="new-ad-name" placeholder="যেমন: নিউ ক্লাসিক ইভেন্ট" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">বিবরণ / ফোন:</label>
+                <input type="text" id="new-ad-desc" placeholder="যেমন: 01945544242" class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] text-slate-400 mb-1">ব্যানার ছবি:</label>
+                <input type="file" id="new-ad-file" accept="image/*" class="w-full text-xs text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:bg-slate-800 file:text-slate-200">
+              </div>
+            </div>
+            <button onclick="uploadAdFromPC()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded text-xs transition flex items-center justify-center gap-2 mt-2">
+              <i class="fa-solid fa-floppy-disk"></i> এই ব্রাউজারে সংরক্ষণ ও সাইকেলে যুক্ত করুন
+            </button>
+          </div>
+
+          <h4 class="font-bold text-xs text-slate-300 pt-2">সংরক্ষিত বিজ্ঞাপন ব্যানার তালিকা:</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="ad-list-container"></div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 5: SCHEDULE ==================== -->
+      <section id="tab-schedule" class="hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-solid fa-clock-rotate-left text-red-500"></i> দৈনিক সময়সূচি ভিত্তিক অটো শিডিউলার
+            </h3>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <span class="text-xs font-bold text-red-400">রমজান সেহরি ও ইফতার</span>
+              <p class="text-xs text-slate-300">• সেহরি: ভোর ৪:১৫ | ইফতার: সন্ধ্যা ৬:১৮</p>
+              <button onclick="showUnavailable('সেহরি ও ইফতার অটো শিডিউল')" class="w-full text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 rounded transition">সেটআপ দেখুন</button>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <span class="text-xs font-bold text-blue-400">নামাজের সময়সূচি</span>
+              <p class="text-xs text-slate-300">• দৈনিক ৫ ওয়াক্ত নামাজের অ্যালার্ট</p>
+              <button onclick="showUnavailable('নামাজের সময়সূচি')" class="w-full text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 rounded transition">সেটআপ দেখুন</button>
+            </div>
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+              <span class="text-xs font-bold text-amber-400">ডেঙ্গু আপডেট বুলেটিন</span>
+              <p class="text-xs text-slate-300">• প্রতিদিন দুপুর ২:০০ টায় অটো আপডেট</p>
+              <button onclick="showUnavailable('ডেঙ্গু আপডেট শিডিউল')" class="w-full text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 rounded transition">সেটআপ দেখুন</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 6: STAFF ==================== -->
+      <section id="tab-staff" class="hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-5">
+          <div class="border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-solid fa-id-card text-emerald-500"></i> কর্মী তথ্য ও অটো আইডি কার্ড ম্যানেজমেন্ট
+            </h3>
+          </div>
+          <p class="text-xs text-slate-400">কর্মী নিবন্ধন, রক্তের গ্রুপ ও ডিজিটাল আইডি কার্ড সিস্টেম।</p>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 7: INTEGRATIONS ==================== -->
+      <section id="tab-integrations" class="hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-5">
+          <div class="border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-brands fa-wordpress text-blue-500"></i> ওয়ার্ডপ্রেস ও সোশ্যাল মিডিয়া API সেটিংস
+            </h3>
+          </div>
+          <p class="text-xs text-slate-400">এই ফাইলে WordPress, Facebook, Instagram বা Telegram API সংযুক্ত নেই। প্রকৃত সিঙ্ক বা প্রকাশের জন্য নিরাপদ সার্ভার ও সংশ্লিষ্ট প্ল্যাটফর্মের API credentials দরকার।</p>
+        </div>
+      </section>
+
+      <!-- ==================== TAB 8: LOGS ==================== -->
+      <section id="tab-logs" class="hidden space-y-6">
+        <div class="bg-slate-900 rounded-xl border border-slate-800 p-6 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-emerald-500"></i> লাইভ সিস্টেম অটোমেশন লগস
+            </h3>
+            <button onclick="clearLogs()" class="text-xs text-slate-400 hover:text-white bg-slate-800 px-2.5 py-1 rounded">লগ পরিষ্কার</button>
+          </div>
+          <div id="system-logs-box" class="bg-slate-950 p-4 rounded-lg font-mono text-xs text-emerald-400 h-60 overflow-y-auto space-y-2 border border-slate-800">
+            <p>[12:00:01 PM] 1920x1920 PhotoCard Engine initialized successfully.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    let defaultAds = [
+      { id: 'ad-1', name: 'নিউ ক্লাসিক ইভেন্ট ম্যানেজমেন্ট', desc: 'হলুদের স্টেজ, বউভাত | 01945544242', image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800' },
+      { id: 'ad-2', name: 'bKash Merchant Offer', desc: 'প্রতিদিন ক্যাশব্যাক অফার।', image: 'https://images.unsplash.com/photo-1556742049-0a67d553c2c5?w=800' },
+      { id: 'ad-3', name: 'Nagad Digital Service', desc: 'সবচেয়ে কম খরচে সেন্ড মানি।', image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800' }
+    ];
+
+    const AD_STORAGE_KEY = 'dnbangla_local_ads';
+    const MAX_AD_IMAGE_BYTES = 2 * 1024 * 1024;
+
+    function loadAdBanners() {
+      try {
+        const saved = localStorage.getItem(AD_STORAGE_KEY);
+        if (!saved) return [...defaultAds];
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed.every(ad =>
+          ad && typeof ad.name === 'string' && typeof ad.desc === 'string' &&
+          typeof ad.image === 'string' && /^(https:\/\/|data:image\/)/i.test(ad.image)
+        )) return parsed;
+      } catch (error) {
+        console.warn('Saved ad data could not be read.', error);
+      }
+      return [...defaultAds];
+    }
+
+    function saveAdBanners() {
+      try {
+        localStorage.setItem(AD_STORAGE_KEY, JSON.stringify(adBanners));
+        return true;
+      } catch (error) {
+        console.warn('Saved ad data could not be written.', error);
+        showToast('ব্রাউজারের স্টোরেজ পূর্ণ। ছোট ছবি ব্যবহার করুন বা কিছু বিজ্ঞাপন মুছুন।', 'error');
+        return false;
+      }
+    }
+
+    let adBanners = loadAdBanners();
+    let currentAdIndex = 0;
+    let textAdIndex = 0;
+    let adImageObjs = {};
+    let bgImageObj = null;
+    let toastTimer = null;
+
+    window.onload = function() {
+      initAdDropdown();
+      renderAdList();
+      document.getElementById('topbar-ad-name').textContent = adBanners[0]?.name || 'কোনো বিজ্ঞাপন নেই';
+      preloadAdImages();
+      handleAutoDateToggle();
+      updateTextTriggerColorControls();
+      drawCanvas();
+      drawTextTriggerCanvas();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          drawCanvas();
+          drawTextTriggerCanvas();
+        });
+      }
+    };
+
+    function preloadAdImages() {
+      adImageObjs = {};
+      adBanners.forEach((ad, idx) => {
+        let img = new Image();
+        if (!ad.image.startsWith('data:')) img.crossOrigin = "anonymous";
+        img.onload = function() {
+          adImageObjs[idx] = img;
+          drawCanvas();
+        };
+        img.onerror = function() {
+          delete adImageObjs[idx];
+          drawCanvas();
+        };
+        img.src = ad.image;
+      });
+    }
+
+    function drawImageCover(ctx, image, x, y, width, height) {
+      if (!image || !image.width || !image.height) return;
+      const scale = Math.max(width / image.width, height / image.height);
+      const sourceWidth = width / scale;
+      const sourceHeight = height / scale;
+      const sourceX = (image.width - sourceWidth) / 2;
+      const sourceY = (image.height - sourceHeight) / 2;
+      ctx.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, x, y, width, height);
+    }
+
+    function drawSocialIcon(ctx, platform, centerX, centerY, size) {
+      const radius = size / 2;
+      const colors = {
+        facebook: '#1877F2',
+        x: '#111111',
+        threads: '#111111',
+        instagram: '#D62976',
+        youtube: '#FF0033',
+        linkedin: '#0A66C2'
+      };
+
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, Math.PI * 2);
+      ctx.fillStyle = colors[platform];
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      if (platform === 'facebook') {
+        ctx.font = 'bold 42px Arial, sans-serif';
+        ctx.fillText('f', 1, 2);
+      } else if (platform === 'x') {
+        ctx.beginPath();
+        ctx.moveTo(-11, -11);
+        ctx.lineTo(11, 11);
+        ctx.moveTo(11, -11);
+        ctx.lineTo(-11, 11);
+        ctx.stroke();
+      } else if (platform === 'threads') {
+        ctx.font = 'bold 31px Arial, sans-serif';
+        ctx.fillText('@', 0, 0);
+      } else if (platform === 'instagram') {
+        ctx.beginPath();
+        ctx.roundRect(-15, -15, 30, 30, 8);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, 7, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(9, -9, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (platform === 'youtube') {
+        ctx.beginPath();
+        ctx.roundRect(-17, -12, 34, 24, 7);
+        ctx.fill();
+        ctx.fillStyle = colors.youtube;
+        ctx.beginPath();
+        ctx.moveTo(-3, -7);
+        ctx.lineTo(8, 0);
+        ctx.lineTo(-3, 7);
+        ctx.closePath();
+        ctx.fill();
+      } else if (platform === 'linkedin') {
+        ctx.font = 'bold 26px Arial, sans-serif';
+        ctx.fillText('in', 0, 0);
+      }
+      ctx.restore();
+    }
+
+    function switchTab(tabId) {
+      const tabs = ['overview', 'photocard', 'texttrigger', 'admanager', 'schedule', 'staff', 'integrations', 'logs'];
+      tabs.forEach(t => {
+        document.getElementById('tab-' + t).classList.add('hidden');
+        document.getElementById('nav-' + t)?.classList.remove('active-nav');
+      });
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      document.getElementById('nav-' + tabId)?.classList.add('active-nav');
+    }
+
+    function resetTopHeaderColor() {
+      document.getElementById('picker-top-bg').value = '#ffffff';
+      document.getElementById('picker-top-text').value = '#111111';
+      drawCanvas();
+    }
+
+    function resetBottomAreaColor() {
+      document.getElementById('picker-bottom-bg').value = '#840b0b';
+      document.getElementById('picker-bottom-text').value = '#ffffff';
+      drawCanvas();
+    }
+
+    function handleAutoDateToggle() {
+      const isAuto = document.getElementById('toggle-auto-date').checked;
+      const dateInput = document.getElementById('input-date-val');
+      if(isAuto) {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateInput.value = now.toLocaleDateString('bn-BD', options);
+        dateInput.disabled = true;
+      } else {
+        dateInput.disabled = false;
+      }
+      drawCanvas();
+    }
+
+    function handleBgUpload(e) {
+      const file = e.target.files[0];
+      if(file) {
+        if (!file.type.startsWith('image/')) {
+          showToast('একটি বৈধ ছবি ফাইল নির্বাচন করুন।', 'error');
+          e.target.value = '';
+          return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+          showToast('ফিচার ছবিটি ১০ MB-এর চেয়ে বড়। ছোট ছবি ব্যবহার করুন।', 'error');
+          e.target.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onerror = () => showToast('ছবিটি পড়া যায়নি। আবার চেষ্টা করুন।', 'error');
+        reader.onload = function(event) {
+          bgImageObj = new Image();
+          bgImageObj.onload = function() { drawCanvas(); }
+          bgImageObj.onerror = function() { bgImageObj = null; showToast('ছবিটি খোলা যায়নি।', 'error'); }
+          bgImageObj.src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function initAdDropdown() {
+      const select = document.getElementById('ad-banner-select');
+      if(!select) return;
+      select.innerHTML = '';
+      adBanners.forEach((ad, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = ad.name + ' (' + ad.desc.substring(0, 25) + '...)';
+        select.appendChild(opt);
+      });
+    }
+
+    function changeSelectedAd(val) {
+      const index = Number.parseInt(val, 10);
+      if (!Number.isInteger(index) || index < 0 || index >= adBanners.length) return;
+      currentAdIndex = index;
+      document.getElementById('topbar-ad-name').textContent = adBanners[currentAdIndex].name;
+      drawCanvas();
+    }
+
+    function rotateToNextAd() {
+      if (!adBanners.length) {
+        showToast('ঘোরানোর জন্য কোনো বিজ্ঞাপন নেই।', 'error');
+        return;
+      }
+      currentAdIndex = (currentAdIndex + 1) % adBanners.length;
+      const select = document.getElementById('ad-banner-select');
+      if(select) select.value = currentAdIndex;
+      document.getElementById('topbar-ad-name').textContent = adBanners[currentAdIndex].name;
+      drawCanvas();
+      showToast('পরবর্তী বিজ্ঞাপনের ব্যানার লোড করা হয়েছে: ' + adBanners[currentAdIndex].name);
+    }
+
+    function renderAdList() {
+      const container = document.getElementById('ad-list-container');
+      if(!container) return;
+      container.replaceChildren();
+      adBanners.forEach((ad, idx) => {
+        const card = document.createElement('div');
+        card.className = 'bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-2';
+
+        const imageWrap = document.createElement('div');
+        imageWrap.className = 'aspect-video w-full rounded overflow-hidden relative bg-slate-900';
+        const image = document.createElement('img');
+        image.src = ad.image;
+        image.alt = ad.name;
+        image.className = 'w-full h-full object-cover';
+        const badge = document.createElement('span');
+        badge.className = 'absolute top-1 left-1 bg-amber-600 text-white text-[9px] px-2 py-0.5 rounded font-bold';
+        badge.textContent = `এই ব্রাউজারে #${idx + 1}`;
+        imageWrap.append(image, badge);
+
+        const name = document.createElement('h4');
+        name.className = 'font-semibold text-xs text-slate-200 truncate';
+        name.textContent = ad.name;
+        const description = document.createElement('p');
+        description.className = 'text-[10px] text-slate-400 truncate';
+        description.textContent = ad.desc;
+
+        const actions = document.createElement('div');
+        actions.className = 'flex gap-2 pt-1';
+        const selectButton = document.createElement('button');
+        selectButton.className = 'flex-1 text-[11px] bg-slate-800 hover:bg-slate-700 text-amber-300 py-1 rounded transition text-center';
+        selectButton.innerHTML = '<i class="fa-solid fa-bolt" aria-hidden="true"></i> সিলেক্ট করুন';
+        selectButton.onclick = () => {
+          changeSelectedAd(String(idx));
+          switchTab('photocard');
+        };
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'px-2.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 py-1 rounded text-[11px]';
+        deleteButton.setAttribute('aria-label', `${ad.name} মুছুন`);
+        deleteButton.innerHTML = '<i class="fa-solid fa-trash" aria-hidden="true"></i>';
+        deleteButton.onclick = () => deleteAd(idx);
+        actions.append(selectButton, deleteButton);
+        card.append(imageWrap, name, description, actions);
+        container.appendChild(card);
+      });
+      document.getElementById('overview-active-ads').textContent = adBanners.length + ' টি';
+    }
+
+    function uploadAdFromPC() {
+      const name = document.getElementById('new-ad-name').value;
+      const desc = document.getElementById('new-ad-desc').value;
+      const fileInput = document.getElementById('new-ad-file');
+
+      if(!name.trim()) { showToast('দয়া করে বিজ্ঞাপনের নাম লিখুন।', 'error'); return; }
+      if(!fileInput.files || !fileInput.files[0]) { showToast('দয়া করে ব্যানার ছবি সিলেক্ট করুন।', 'error'); return; }
+
+      const file = fileInput.files[0];
+      if (!file.type.startsWith('image/')) {
+        showToast('একটি বৈধ ছবি ফাইল নির্বাচন করুন।', 'error');
+        return;
+      }
+      if (file.size > MAX_AD_IMAGE_BYTES) {
+        showToast('ছবিটি ২ MB-এর চেয়ে বড়। ছোট ছবি ব্যবহার করুন।', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onerror = () => showToast('ছবিটি পড়া যায়নি। আবার চেষ্টা করুন।', 'error');
+      reader.onload = function(event) {
+        let img = new Image();
+        img.onload = function() {
+          const newAd = {
+            id: 'ad-' + Date.now(),
+            name: name.trim(),
+            desc: desc.trim() || 'বিশেষ অফার',
+            image: event.target.result
+          };
+          adBanners.push(newAd);
+          if (!saveAdBanners()) {
+            adBanners.pop();
+            return;
+          }
+          const newIdx = adBanners.length - 1;
+          adImageObjs[newIdx] = img;
+          currentAdIndex = newIdx;
+          initAdDropdown();
+          renderAdList();
+          document.getElementById('ad-banner-select').value = currentAdIndex;
+          drawCanvas();
+          document.getElementById('new-ad-name').value = '';
+          document.getElementById('new-ad-desc').value = '';
+          fileInput.value = '';
+          showToast('ব্যানার এই ব্রাউজারে সংরক্ষণ করা হয়েছে।');
+        };
+        img.onerror = () => showToast('ছবিটি খোলা যায়নি। অন্য ছবি ব্যবহার করুন।', 'error');
+        img.src = event.target.result;
+      }
+      reader.readAsDataURL(file);
+    }
+
+    function deleteAd(idx) {
+      if(adBanners.length <= 1) { alert('অন্তত একটি বিজ্ঞাপন থাকা আবশ্যক!'); return; }
+      if(confirm('আপনি কি নিশ্চিত এই বিজ্ঞাপনটি ডিলিট করতে চান?')) {
+        const selectedId = adBanners[currentAdIndex]?.id;
+        const [removedAd] = adBanners.splice(idx, 1);
+        if (!saveAdBanners()) {
+          adBanners.splice(idx, 0, removedAd);
+          return;
+        }
+        const selectedIndex = adBanners.findIndex(ad => ad.id === selectedId);
+        currentAdIndex = selectedIndex >= 0 ? selectedIndex : Math.min(idx, adBanners.length - 1);
+        initAdDropdown();
+        document.getElementById('ad-banner-select').value = currentAdIndex;
+        renderAdList();
+        preloadAdImages();
+        document.getElementById('topbar-ad-name').textContent = adBanners[currentAdIndex].name;
+        drawCanvas();
+        showToast('বিজ্ঞাপনটি এই ব্রাউজার থেকে মুছে ফেলা হয়েছে।');
+      }
+    }
+
+    // ==================== 1920x1920 CANVAS DRAWING ENGINE ====================
+    function drawCanvas() {
+      const canvas = document.getElementById('photocardCanvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const width = 1920;
+      const height = 1920;
+
+      ctx.clearRect(0, 0, width, height);
+
+      // 1. TOP HEADER BORDER (0px to 80px)
+      const topBgColor = document.getElementById('picker-top-bg').value;
+      const topTextColor = document.getElementById('picker-top-text').value;
+
+      ctx.fillStyle = topBgColor;
+      ctx.fillRect(0, 0, width, 80);
+
+      ctx.fillStyle = '#df202c';
+      ctx.font = '900 48px "Hind Siliguri", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('ডিএন', 60, 58);
+      ctx.fillStyle = '#16763d';
+      ctx.fillText('বাংলা', 175, 58);
+
+      ctx.fillStyle = topTextColor;
+      ctx.font = '600 38px "Hind Siliguri", sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(document.getElementById('input-date-val').value, width - 60, 55);
+
+      // 2. FEATURE PHOTO AREA (From 80px to 1165px — এখন ১০৯০px থেকে ১১৬৫px অংশটিও ফিচার ছবির অন্তর্ভুক্ত করা হলো)
+      const photoY = 80;
+      const photoH = 1085; // 80px থেকে 1165px পর্যন্ত ফিচার ছবি বিস্তৃত থাকবে 
+      if (bgImageObj) {
+        drawImageCover(ctx, bgImageObj, 0, photoY, width, photoH);
+      } else {
+        let grad = ctx.createLinearGradient(0, photoY, 0, photoY + photoH);
+        grad.addColorStop(0, '#334155');
+        grad.addColorStop(1, '#0f172a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, photoY, width, photoH);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 50px "Hind Siliguri", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('সংবাদের ফিচার ছবি (1920x1080px)', width / 2, photoY + (photoH / 2));
+      }
+
+      if(document.getElementById('toggle-category-badge').checked) {
+        const catText = document.getElementById('input-category').value;
+        if(catText.trim() !== "") {
+          ctx.font = 'bold 36px "Hind Siliguri", sans-serif';
+          const badgeWidth = Math.min(width - 120, ctx.measureText(catText).width + 80);
+          ctx.fillStyle = '#e50914';
+          ctx.fillRect(60, photoY + 50, badgeWidth, 70);
+          ctx.fillStyle = '#ffffff';
+          ctx.textAlign = 'left';
+          ctx.fillText(catText, 100, photoY + 100, Math.max(0, badgeWidth - 80));
+        }
+      }
+
+      // "বিস্তারিত কমেন্টে" ROUNDED BADGE (1090px to 1165px = 75px Area) -> ছবির ওপর ওভারলে হিসেবে থাকবে (কোনো সাদা ব্যাকগ্রাউন্ড ছাড়া)
+      if(document.getElementById('toggle-comment-badge').checked) {
+        const commentText = document.getElementById('input-comment-text').value;
+        ctx.font = 'bold 32px "Hind Siliguri", sans-serif';
+        const textWidth = ctx.measureText(commentText).width;
+        
+        const badgeHeight = 55; 
+        const badgeWidth = textWidth + 70;
+        
+        const badgeX = (width - badgeWidth) / 2;
+        const badgeY = 1090 + (75 - badgeHeight) / 2; 
+        const cornerRadius = badgeHeight / 2; 
+
+        // Draw Rounded Rectangle Base
+        ctx.beginPath();
+        ctx.fillStyle = '#059669';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 4;
+        
+        ctx.moveTo(badgeX + cornerRadius, badgeY);
+        ctx.lineTo(badgeX + badgeWidth - cornerRadius, badgeY);
+        ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY, badgeX + badgeWidth, badgeY + cornerRadius);
+        ctx.lineTo(badgeX + badgeWidth, badgeY + badgeHeight - cornerRadius);
+        ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY + badgeHeight, badgeX + badgeWidth - cornerRadius, badgeY + badgeHeight);
+        ctx.lineTo(badgeX + cornerRadius, badgeY + badgeHeight);
+        ctx.quadraticCurveTo(badgeX, badgeY + badgeHeight, badgeX, badgeY + badgeHeight - cornerRadius);
+        ctx.lineTo(badgeX, badgeY + cornerRadius);
+        ctx.quadraticCurveTo(badgeX, badgeY, badgeX + cornerRadius, badgeY);
+        ctx.closePath();
+        
+        ctx.fill();
+        ctx.stroke();
+
+        // Draw Badge Text
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.fillText(commentText, width / 2, badgeY + 38);
+      }
+
+      // 3. HEADLINE AREA (1165px - 1563px = 398px Scope Area) -> Auto 1/2/3 Lines Alignment
+      const headlineYStart = 1165;
+      const headlineYEnd = 1563;
+      const headlineH = headlineYEnd - headlineYStart; // 398px
+
+      const bottomBgColor = document.getElementById('picker-bottom-bg').value;
+      const headlineTextColor = document.getElementById('picker-bottom-text').value;
+
+      ctx.fillStyle = bottomBgColor;
+      ctx.fillRect(0, headlineYStart, width, headlineH);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, headlineYStart, width, headlineH);
+      ctx.clip();
+
+      const headline = document.getElementById('input-headline').value;
+      let fontSize = parseInt(document.getElementById('input-fontsize').value);
+      const sideMargin = parseInt(document.getElementById('input-margin').value);
+      const maxWidth = width - (sideMargin * 2);
+
+      ctx.fillStyle = headlineTextColor;
+      ctx.textAlign = 'center';
+      ctx.font = `bold ${fontSize}px "Hind Siliguri", sans-serif`;
+
+      let lines = wrapText(ctx, headline, maxWidth);
+      
+      while ((lines.length * (fontSize * 1.35)) > (headlineH - 20) && fontSize > 18) {
+        fontSize -= 2;
+        ctx.font = `bold ${fontSize}px "Hind Siliguri", sans-serif`;
+        lines = wrapText(ctx, headline, maxWidth);
+      }
+
+      const lineGap = fontSize * 1.35;
+      const totalTextHeight = lines.length * lineGap;
+      let startY = headlineYStart + (headlineH - totalTextHeight) / 2 + (fontSize * 0.85);
+
+      lines.forEach((line, index) => {
+        ctx.fillText(line, width / 2, startY + (index * lineGap));
+      });
+      ctx.restore();
+
+      document.getElementById('fontsize-val').textContent = fontSize + 'px';
+      document.getElementById('margin-val').textContent = sideMargin + 'px';
+
+      // 4. SOCIAL & WEBSITE LINK BAR (1563px to 1640px)
+      const socialBarY = 1563;
+      const socialBarH = 77;
+
+      if(document.getElementById('toggle-social-bar').checked) {
+        const footerBgColor = document.getElementById('input-footer-bg').value;
+        ctx.fillStyle = footerBgColor;
+        ctx.fillRect(0, socialBarY, width, socialBarH);
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(0, socialBarY, width, socialBarH);
+
+        const websiteUrl = document.getElementById('link-website').value.trim();
+        if (websiteUrl) {
+          ctx.fillStyle = '#f8fafc';
+          ctx.font = '600 30px "Hind Siliguri", sans-serif';
+          ctx.textAlign = 'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(websiteUrl, 64, socialBarY + socialBarH / 2, 500);
+        }
+
+        const socials = [
+          { platform: 'facebook', url: document.getElementById('link-facebook').value.trim() },
+          { platform: 'x', url: document.getElementById('link-x').value.trim() },
+          { platform: 'threads', url: document.getElementById('link-threads').value.trim() },
+          { platform: 'instagram', url: document.getElementById('link-instagram').value.trim() },
+          { platform: 'youtube', url: document.getElementById('link-youtube').value.trim() },
+          { platform: 'linkedin', url: document.getElementById('link-linkedin').value.trim() }
+        ].filter(social => social.url);
+
+        const iconSize = 52;
+        const iconGap = 42;
+        const groupWidth = socials.length * iconSize + Math.max(0, socials.length - 1) * iconGap;
+        const iconAreaStart = websiteUrl ? 610 : 0;
+        const iconAreaEnd = width - (websiteUrl ? 55 : 0);
+        const iconAreaWidth = iconAreaEnd - iconAreaStart;
+        const firstIconX = iconAreaStart + (iconAreaWidth - groupWidth) / 2 + iconSize / 2;
+        socials.forEach((social, index) => {
+          drawSocialIcon(
+            ctx,
+            social.platform,
+            firstIconX + index * (iconSize + iconGap),
+            socialBarY + socialBarH / 2,
+            iconSize
+          );
+        });
+      }
+
+      // ADVERTISEMENT BANNER AREA (1640px to 1920px)
+      const adY = 1640;
+      const adH = 280;
+      const adImg = adImageObjs[currentAdIndex];
+
+      if (adImg && adImg.complete) {
+        drawImageCover(ctx, adImg, 0, adY, width, adH);
+      } else {
+        ctx.fillStyle = '#800000';
+        ctx.fillRect(0, adY, width, adH);
+      }
+    }
+
+    function wrapText(ctx, text, maxWidth) {
+      const safeWidth = Math.max(1, maxWidth);
+      const paragraphs = String(text ?? '').replace(/\r/g, '').split('\n');
+      const lines = [];
+      const segmenter = typeof Intl !== 'undefined' && Intl.Segmenter
+        ? new Intl.Segmenter('bn', { granularity: 'grapheme' })
+        : null;
+
+      paragraphs.forEach(paragraph => {
+        const words = paragraph.trim().split(/\s+/).filter(Boolean);
+        if (!words.length) {
+          lines.push('');
+          return;
+        }
+
+        let currentLine = '';
+        words.forEach(word => {
+          const candidate = currentLine ? `${currentLine} ${word}` : word;
+          if (ctx.measureText(candidate).width <= safeWidth) {
+            currentLine = candidate;
+            return;
+          }
+
+          if (currentLine) lines.push(currentLine);
+          if (ctx.measureText(word).width <= safeWidth) {
+            currentLine = word;
+            return;
+          }
+
+          const graphemes = segmenter
+            ? Array.from(segmenter.segment(word), item => item.segment)
+            : Array.from(word);
+          let chunk = '';
+          graphemes.forEach(grapheme => {
+            if (chunk && ctx.measureText(chunk + grapheme).width > safeWidth) {
+              lines.push(chunk);
+              chunk = grapheme;
+            } else {
+              chunk += grapheme;
+            }
+          });
+          currentLine = chunk;
+        });
+        lines.push(currentLine);
+      });
+
+      return lines.length ? lines : [''];
+    }
+
+    function downloadCanvas() {
+      downloadCanvasPng(
+        document.getElementById('photocardCanvas'),
+        'DN-Bangla-1920x1920-Photocard.png',
+        '১৯২০x১৯২০ পিক্সেল ফটোকার্ড ডাউনলোড হয়েছে।'
+      );
+    }
+
+    function downloadCanvasPng(canvas, filename, successMessage) {
+      if (!canvas) {
+        showToast('ডাউনলোডের জন্য ক্যানভাস পাওয়া যায়নি।', 'error');
+        return;
+      }
+      try {
+        canvas.toBlob(blob => {
+          if (!blob) {
+            showToast('ছবি তৈরি করা যায়নি। আবার চেষ্টা করুন।', 'error');
+            return;
+          }
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.download = filename;
+          link.href = url;
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          showToast(successMessage);
+        }, 'image/png');
+      } catch (error) {
+        console.error('Canvas export failed.', error);
+        showToast('ডাউনলোড ব্যর্থ। কোনো অনিরাপদ বা CORS-সীমাবদ্ধ ছবি থাকলে সেটি সরিয়ে আবার চেষ্টা করুন।', 'error');
+      }
+    }
+
+    // ==================== TEXT / TRIGGER PHOTOCARD ====================
+    function updateTextTriggerColorControls() {
+      const isCustom = document.getElementById('text-trigger-bg').value === 'custom';
+      const colorInput = document.getElementById('text-trigger-custom-color');
+      const hint = document.getElementById('text-trigger-custom-hint');
+      colorInput.disabled = !isCustom;
+      colorInput.classList.toggle('cursor-not-allowed', !isCustom);
+      colorInput.classList.toggle('cursor-pointer', isCustom);
+      colorInput.classList.toggle('opacity-50', !isCustom);
+      hint.textContent = isCustom
+        ? 'রং পরিবর্তন করলে প্রিভিউ সঙ্গে সঙ্গে আপডেট হবে।'
+        : 'কাস্টম কালার ব্যবহার করতে “Custom Color” বেছে নিন।';
+    }
+
+    function handleTextTriggerBackgroundChange() {
+      updateTextTriggerColorControls();
+      drawTextTriggerCanvas();
+    }
+
+    function darkenTextTriggerColor(hexColor, factor = 0.48) {
+      const normalized = String(hexColor).replace('#', '');
+      if (!/^[0-9a-f]{6}$/i.test(normalized)) return '#0b0f19';
+      const channels = [0, 2, 4].map(offset =>
+        Math.round(parseInt(normalized.slice(offset, offset + 2), 16) * factor)
+      );
+      return '#' + channels.map(channel => channel.toString(16).padStart(2, '0')).join('');
+    }
+
+    function drawTextTriggerCanvas() {
+      const canvas = document.getElementById('textTriggerCanvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const headerHeight = 85;
+      const socialBarY = 1563;
+      const socialBarH = 77;
+      const adY = 1640;
+      const adH = 280;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const backgroundStyle = document.getElementById('text-trigger-bg').value;
+      const backgroundPalettes = {
+        'gradient-red': ['#b20710', '#0f172a'],
+        'gradient-blue': ['#334155', '#0b1224'],
+        'gradient-maroon': ['#840b0b', '#241018'],
+        'gradient-dark': ['#111827', '#030712']
+      };
+      const customColor = document.getElementById('text-trigger-custom-color').value;
+      const palette = backgroundStyle === 'custom'
+        ? [customColor, darkenTextTriggerColor(customColor)]
+        : backgroundPalettes[backgroundStyle] || backgroundPalettes['gradient-red'];
+      let grad = ctx.createLinearGradient(0, 0, width, height);
+      grad.addColorStop(0, palette[0]);
+      grad.addColorStop(1, palette[1]);
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Header: match the main photo-card's branding and use today's Dhaka date.
+      ctx.fillStyle = document.getElementById('picker-top-bg').value;
+      ctx.fillRect(0, 0, width, headerHeight);
+      ctx.fillStyle = '#df202c';
+      ctx.font = '900 48px "Hind Siliguri", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'alphabetic';
+      ctx.fillText('ডিএন', 60, 58);
+      ctx.fillStyle = '#16763d';
+      ctx.fillText('বাংলা', 175, 58);
+      ctx.fillStyle = document.getElementById('picker-top-text').value;
+      ctx.font = '600 38px "Hind Siliguri", sans-serif';
+      ctx.textAlign = 'right';
+      const today = new Date().toLocaleDateString('bn-BD', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'Asia/Dhaka'
+      });
+      ctx.fillText(today, width - 60, 55, 700);
+
+      // Keep the existing small category treatment and placement unchanged.
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.fillRect(100, 240, width - 200, 90);
+      const cat = document.getElementById('text-trigger-cat').value;
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 42px "Hind Siliguri", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(cat, width / 2, 300, width - 360);
+
+      const content = document.getElementById('text-trigger-content').value;
+      const requestedFontSize = parseInt(document.getElementById('tc-input-fontsize').value, 10) || 75;
+      const sideMargin = parseInt(document.getElementById('tc-input-margin').value, 10) || 225;
+      const maxWidth = Math.max(1, width - (sideMargin * 2));
+      const textAreaBottom = socialBarY;
+      let tcFontSize = requestedFontSize;
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      function layoutMessage(areaTop) {
+        const areaHeight = textAreaBottom - areaTop;
+        tcFontSize = requestedFontSize;
+        ctx.font = `bold ${tcFontSize}px "Hind Siliguri", sans-serif`;
+        let lines = wrapText(ctx, content, maxWidth);
+        while (lines.length * tcFontSize * 1.3 > areaHeight && tcFontSize > 18) {
+          tcFontSize = Math.max(18, tcFontSize - 2);
+          ctx.font = `bold ${tcFontSize}px "Hind Siliguri", sans-serif`;
+          lines = wrapText(ctx, content, maxWidth);
+        }
+        const lineHeight = Math.min(tcFontSize * 1.3, areaHeight / Math.max(1, lines.length));
+        const totalHeight = lines.length * lineHeight;
+        return {
+          areaTop,
+          areaHeight,
+          lines,
+          lineHeight,
+          totalHeight,
+          firstBaseline: areaTop + (areaHeight - totalHeight) / 2 + tcFontSize * 0.85
+        };
+      }
+      let layout = layoutMessage(headerHeight);
+      const visibleTextTop = layout.firstBaseline - tcFontSize * 0.85;
+      const visibleTextBottom = layout.firstBaseline + (layout.lines.length - 1) * layout.lineHeight;
+      if (visibleTextTop < 350 && visibleTextBottom > 220) {
+        layout = layoutMessage(350);
+      }
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(sideMargin, layout.areaTop, maxWidth, layout.areaHeight);
+      ctx.clip();
+      layout.lines.forEach((line, index) => {
+        ctx.fillText(line, width / 2, layout.firstBaseline + (index * layout.lineHeight), maxWidth);
+      });
+      ctx.restore();
+
+      document.getElementById('tc-fontsize-val').textContent = tcFontSize + 'px';
+      document.getElementById('tc-margin-val').textContent = `${sideMargin}px / ${maxWidth}px`;
+
+      // Social/site strip: mirror the main photo-card section (1563–1640px).
+      ctx.fillStyle = document.getElementById('input-footer-bg').value;
+      ctx.fillRect(0, socialBarY, width, socialBarH);
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(0, socialBarY, width, socialBarH);
+      const websiteUrl = document.getElementById('link-website').value.trim();
+      if (websiteUrl) {
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '600 30px "Hind Siliguri", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(websiteUrl, 64, socialBarY + socialBarH / 2, 500);
+      }
+      const socials = [
+        { platform: 'facebook', url: document.getElementById('link-facebook').value.trim() },
+        { platform: 'x', url: document.getElementById('link-x').value.trim() },
+        { platform: 'threads', url: document.getElementById('link-threads').value.trim() },
+        { platform: 'instagram', url: document.getElementById('link-instagram').value.trim() },
+        { platform: 'youtube', url: document.getElementById('link-youtube').value.trim() },
+        { platform: 'linkedin', url: document.getElementById('link-linkedin').value.trim() }
+      ].filter(social => social.url);
+      const iconSize = 52;
+      const iconGap = 42;
+      const groupWidth = socials.length * iconSize + Math.max(0, socials.length - 1) * iconGap;
+      const iconAreaStart = websiteUrl ? 610 : 0;
+      const iconAreaEnd = width - (websiteUrl ? 55 : 0);
+      const iconAreaWidth = iconAreaEnd - iconAreaStart;
+      const firstIconX = iconAreaStart + (iconAreaWidth - groupWidth) / 2 + iconSize / 2;
+      socials.forEach((social, index) => {
+        drawSocialIcon(
+          ctx,
+          social.platform,
+          firstIconX + index * (iconSize + iconGap),
+          socialBarY + socialBarH / 2,
+          iconSize
+        );
+      });
+
+      // Advertisement strip: use the shared ad list, but rotate independently
+      // from the main photo-card page.
+      const safeTextAdIndex = adBanners.length ? textAdIndex % adBanners.length : -1;
+      const adImg = safeTextAdIndex >= 0 ? adImageObjs[safeTextAdIndex] : null;
+      if (adImg && adImg.complete) {
+        drawImageCover(ctx, adImg, 0, adY, width, adH);
+      } else {
+        ctx.fillStyle = '#800000';
+        ctx.fillRect(0, adY, width, adH);
+      }
+    }
+
+    function generateTextTriggerCard() {
+      if (adBanners.length) {
+        textAdIndex = (textAdIndex + 1) % adBanners.length;
+      }
+      drawTextTriggerCanvas();
+      const adName = adBanners[textAdIndex]?.name;
+      showToast(adName
+        ? `নতুন টেক্সট ফটোকার্ড তৈরি হয়েছে। বিজ্ঞাপন: ${adName}`
+        : 'নতুন টেক্সট ফটোকার্ড তৈরি হয়েছে।');
+    }
+
+    function downloadTextTriggerCanvas() {
+      downloadCanvasPng(
+        document.getElementById('textTriggerCanvas'),
+        'DN-Bangla-Text-Photocard-1920x1920.png',
+        'টেক্সট ফটোকার্ড ডাউনলোড হয়েছে।'
+      );
+    }
+
+    function publishDirectly(platform) {
+      showToast(`${platform}-এ পোস্ট করা হয়নি—এই ফাইলে কোনো প্রকাশ API সংযুক্ত নেই।`, 'info');
+      switchTab('integrations');
+    }
+
+    function triggerAutoFetch() {
+      showToast('WordPress সিঙ্ক করা হয়নি—API সংযোগ এখনো সেটআপ করা নেই।', 'info');
+      switchTab('integrations');
+    }
+
+    function showUnavailable(feature) {
+      showToast(`${feature} চালু নেই—এই ফাইলে কোনো সার্ভার বা শিডিউলার সংযুক্ত নেই।`, 'info');
+    }
+
+    function showToast(msg, type = 'success') {
+      const toast = document.getElementById('toast-message');
+      const toastText = document.getElementById('toast-text');
+      const styles = {
+        success: { classes: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300', icon: 'fa-circle-check' },
+        info: { classes: 'bg-sky-500/20 border-sky-500/40 text-sky-200', icon: 'fa-circle-info' },
+        error: { classes: 'bg-red-500/20 border-red-500/40 text-red-200', icon: 'fa-circle-exclamation' }
+      };
+      const style = styles[type] || styles.success;
+      toast.className = `p-3 rounded-lg border text-xs flex items-center justify-between transition-all ${style.classes}`;
+      toastText.replaceChildren();
+      const icon = document.createElement('i');
+      icon.className = `fa-solid ${style.icon} mr-2`;
+      icon.setAttribute('aria-hidden', 'true');
+      toastText.append(icon, document.createTextNode(msg));
+      toast.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 4000);
+    }
+
+    function clearLogs() {
+      document.getElementById('system-logs-box').innerHTML = `<p>[${new Date().toLocaleTimeString()}] Logs cleared.</p>`;
+    }
+  </script>
+</body>
+</html>
